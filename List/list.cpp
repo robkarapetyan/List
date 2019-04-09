@@ -12,9 +12,9 @@ int main()
 		std::cout << smtg.empty() << std::endl;
 		smtg.insert(5, 1);
 		smtg.print();
-		smtg.insert(32, 2);
-		smtg.insert(9, 2);
-		smtg.insert(6, 2);
+		smtg.insert(32, 1);
+		smtg.insert(9, 1);
+		smtg.insert(6, 1);
 		smtg.print();
 		std::cout << smtg.size() << std::endl << smtg.empty();
 		smtg.clear();
