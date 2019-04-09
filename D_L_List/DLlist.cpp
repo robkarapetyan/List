@@ -16,7 +16,7 @@ int main() {
 		--it;	
 		std::cout << *it << std::endl << std::endl;
 		it = it + 1;           
-		std::cout << *it << std::endl << std::endl;			*/			// causes assertion   list < 5,4 >
+		std::cout << *it << std::endl << std::endl;
 		ctc.push_back(6);
 		ctc.push_front(10);
 		ctc.pop_back();

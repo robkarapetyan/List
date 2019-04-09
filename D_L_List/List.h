@@ -26,8 +26,8 @@ public:
 	public:
 		Iterator() = default;
 		
-		Iterator operator + (int a);			// moves iterator forward  a times
-		Iterator operator - (int a);			//				  backward
+		Iterator operator + (size_t a);			// moves iterator forward  a times
+		Iterator operator - (size_t a);			//				  backward
 		Iterator operator ++();
 		Iterator operator ++ (int);
 		Iterator operator --();
@@ -246,12 +246,12 @@ typename List<T>::Iterator List<T>::end()
 //----------------------------------------------- Iterator's operators ---------------------------------------------------------------------------------------------------------
 
 template<typename T>
-typename List<T>::Iterator List<T>::Iterator::operator+(int a)
+typename List<T>::Iterator List<T>::Iterator::operator+(size_t a)
 {
 	Iterator current;
 	assert(cur != nullptr);
 	current.cur = cur;
-	for (int i = 0; i < a; ++i) {
+	for (size_t i = 0; i < a; ++i) {
 		assert(current.cur->next != nullptr);
 		current.cur = current.cur->next;
 	}
@@ -259,12 +259,12 @@ typename List<T>::Iterator List<T>::Iterator::operator+(int a)
 }
 
 template<typename T>
-typename List<T>::Iterator List<T>::Iterator::operator-(int a)
+typename List<T>::Iterator List<T>::Iterator::operator-(size_t a)
 {
 	Iterator current;
 	assert(cur != nullptr);
 	current.cur = cur;
-	for (int i = 0; i < a; ++i) {
+	for (size_t i = 0; i < a; ++i) {
 		assert(current.cur->prev != nullptr);
 		current.cur = current.cur->prev;
 	}
@@ -274,6 +274,7 @@ typename List<T>::Iterator List<T>::Iterator::operator-(int a)
 template<typename T>
 typename List<T>::Iterator List<T>::Iterator::operator++(int)
 {
+
 	Iterator current;
 	assert(cur != nullptr);
 	current.cur = cur;
