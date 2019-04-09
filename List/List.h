@@ -62,13 +62,8 @@ inline void List<T>::erase(size_t index)
 template<typename T>
 inline bool List<T>::empty()
 {
-	if (head == nullptr) {
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return head == nullptr;
+	
 }
 
 template<typename T>
