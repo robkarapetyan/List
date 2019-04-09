@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{ACCF48AB-8348-4741-8495-6FA4000EA85E}</ProjectGuid>
+    <ProjectGuid>{5C52056F-AEDD-4B70-B44C-9CEE5A637543}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Doublylinkedlist</RootNamespace>
+    <RootNamespace>DLList</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
