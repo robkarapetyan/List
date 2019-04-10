@@ -14,15 +14,18 @@ int main() {
 		ctc.print();
 		DLList<int>::Iterator it = ctc.end();
 		--it;	
-		std::cout << *it << std::endl << std::endl;
+		std::cout << *it << std::endl << "-------" << std::endl;
 		it = it + 1;           
-		std::cout << *it << std::endl << std::endl;
+		std::cout << *it << std::endl << "-------" << std::endl;
 		
+		std::cout << ctc.getValue(1);
+
+		/*
 		ctc.push_back(6);
 		ctc.push_front(10);
 		ctc.pop_back();
 		ctc.pop_front();
-		ctc.print();
+		ctc.print();*/
 	}
 
 	catch (const std::exception & e)

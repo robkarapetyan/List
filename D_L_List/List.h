@@ -44,7 +44,8 @@ public:
 	size_t size() override;
 	void insert(const T& data, size_t pos) override;
 	void erase(size_t index) override;
-	void print();
+	void print()override;
+	const T& getValue(size_t pos) const override;
 	void push_back(const T& data) override;
 	void push_front(const T& data) override;
 	void pop_back() override;
@@ -169,6 +170,21 @@ inline void DLList<T>::print()
 	std::cout << "-------------------------------------------" << std::endl;
 
 }
+
+template<typename T>
+inline const T & DLList<T>::getValue(size_t pos) const
+{
+	assert(pos > 0);
+	assert(m_head != nullptr);
+	Node* tmp = DLList<T>::m_head;
+	for (size_t i = 1; i < pos; ++i)
+	{
+		assert(tmp->next != nullptr);
+		tmp = tmp->next;
+	}
+	return tmp->Data;
+}
+
 //----------------------------------------------- Push & Pop ------------------------
 template<typename T>
 inline void DLList<T>::push_back(const T& data)
