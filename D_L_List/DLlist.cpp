@@ -26,6 +26,7 @@ int main() {
 		std::cout << *itd;*/
 
 	}
+
 	catch (const std::exception & e)
 	{
 		std::cerr << e.what() << std::endl;

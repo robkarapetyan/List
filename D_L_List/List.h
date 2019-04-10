@@ -80,7 +80,7 @@ inline void List<T>::clear()
 template<typename T>
 inline bool List<T>::empty()
 {
-	return (head == nullptr) ? 1 : 0;
+	return head == nullptr;
 }
 
 template<typename T>
