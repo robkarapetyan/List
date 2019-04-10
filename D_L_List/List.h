@@ -4,10 +4,11 @@
 #include <exception>
 
 template<typename T>
-class List : public Interface<T>
+class DLList : public List<T>
 {
 public:
-	List();
+	DLList();
+	~DLList() {} override;
 
 private:
 	struct Node {
@@ -22,17 +23,17 @@ private:
 public:
 
 	class Iterator {
-		friend class List;
+		friend class DLList;
 	public:
 		Iterator() = default;
-		
+		Iterator& operator=(const Iterator&) = default;
+
 		Iterator operator + (size_t a);	// moves iterator forward  a times
 		Iterator operator - (size_t a);	// moves iterator backward a times
 		Iterator operator ++();
 		Iterator operator ++ (int);
 		Iterator operator --();
 		Iterator operator -- (int);
-		void operator = (Iterator a);
 		T operator *();
 	private:
 		Node* m_cur;
@@ -55,21 +56,21 @@ private:
 	Node* m_head;
 	size_t m_size;
 };
-//----------------------------------------------- List's functions --------------------------
+//----------------------------------------------- List's functions -----------------
 
 template <typename T>
-List<T>::List()
+DLList<T>::DLList()
 	: m_head(nullptr)
 	, m_size(0)
 {
 }
 
+
 template<typename T>
-inline void List<T>::clear()
+inline void DLList<T>::clear()
 {
 	while (m_head != nullptr) {
-		Node* a;
-		a = m_head;
+		Node* a = m_head;
 		m_head = m_head->next;
 		delete a;
 		--m_size;
@@ -77,19 +78,19 @@ inline void List<T>::clear()
 }
 
 template<typename T>
-inline bool List<T>::empty()
+inline bool DLList<T>::empty()
 {
 	return m_head == nullptr;
 }
 
 template<typename T>
-inline size_t List<T>::size()
+inline size_t DLList<T>::size()
 {
 	return m_size;
 }
 
 template<typename T>
-inline void List<T>::insert(const T& data, size_t pos)
+inline void DLList<T>::insert(const T& data, size_t pos)
 {
 	assert(pos > 0);
 	if (pos > m_size + 1) {
@@ -98,6 +99,7 @@ inline void List<T>::insert(const T& data, size_t pos)
 	if (pos == 1) {
 		if(m_head == nullptr){
 			m_head = new Node(data, nullptr, nullptr);
+			++m_size;
 			return;
 		}
 		m_head->prev = new Node(data, nullptr, m_head);
@@ -126,7 +128,7 @@ inline void List<T>::insert(const T& data, size_t pos)
 }
 
 template<typename T>
-inline void List<T>::erase(size_t index)
+inline void DLList<T>::erase(size_t index)
 {
 	assert(index > 0);
 	if (index > m_size) {
@@ -157,7 +159,7 @@ inline void List<T>::erase(size_t index)
 }
 
 template<typename T>
-inline void List<T>::print()
+inline void DLList<T>::print()
 {
 	Node* a = m_head;
 	while (a != nullptr) {
@@ -167,9 +169,9 @@ inline void List<T>::print()
 	std::cout << "-------------------------------------------" << std::endl;
 
 }
-//----------------------------------------------- List's  Push,   Pop ------------------------
+//----------------------------------------------- Push & Pop ------------------------
 template<typename T>
-inline void List<T>::push_back(const T& data)
+inline void DLList<T>::push_back(const T& data)
 {
 	Node* temp = m_head;
 	for (size_t i = 0; i < m_size; ++i) {
@@ -183,7 +185,7 @@ inline void List<T>::push_back(const T& data)
 }
 
 template<typename T>
-inline void List<T>::push_front(const T & data)
+inline void DLList<T>::push_front(const T & data)
 {
 	if (m_head == nullptr) {
 		m_head = new Node(data, nullptr, nullptr);
@@ -199,7 +201,7 @@ inline void List<T>::push_front(const T & data)
 }
 
 template<typename T>
-inline void List<T>::pop_back()
+inline void DLList<T>::pop_back()
 {
 	Node* tempdecr = nullptr;
 	Node* temp = m_head;
@@ -213,7 +215,7 @@ inline void List<T>::pop_back()
 }
 
 template<typename T>
-inline void List<T>::pop_front()
+inline void DLList<T>::pop_front()
 {
 	Node* temp = m_head;
 	m_head = m_head->next;
@@ -221,30 +223,30 @@ inline void List<T>::pop_front()
 	--m_size;
 }
 
-//-----------------------------------------------List's	Begin,	End---------------------------
+//-----------------------------------------------List's	Begin,	End------------------
 template<typename T>
-typename List<T>::Iterator List<T>::begin()
+typename DLList<T>::Iterator DLList<T>::begin()
 {
 	Iterator it;
-	it.cur = List::m_head;
+	it.cur = DLList::m_head;
 	return it;
 }
 
 template<typename T>
-typename List<T>::Iterator List<T>::end()
+typename DLList<T>::Iterator DLList<T>::end()
 {
 	Iterator it;
-	it.cur = List::m_head;
-	while (it.cur->next != nullptr) {
-		it.cur = it.cur->next;
+	it.m_cur = DLList::m_head;
+	while (it.m_cur->next != nullptr) {
+		it.m_cur = it.m_cur->next;
 	}
 	return it;
 }
 
-//----------------------------------------------- Iterator's operators -----------------------
+//----------------------------------------------- Iterator's operators --------------
 
 template<typename T>
-typename List<T>::Iterator List<T>::Iterator::operator+(size_t a)
+typename DLList<T>::Iterator DLList<T>::Iterator::operator+(size_t a)
 {
 	Iterator current;
 	assert(m_cur != nullptr);
@@ -257,7 +259,7 @@ typename List<T>::Iterator List<T>::Iterator::operator+(size_t a)
 }
 
 template<typename T>
-typename List<T>::Iterator List<T>::Iterator::operator-(size_t a)
+typename DLList<T>::Iterator DLList<T>::Iterator::operator-(size_t a)
 {
 	Iterator current;
 	assert(m_cur != nullptr);
@@ -270,20 +272,18 @@ typename List<T>::Iterator List<T>::Iterator::operator-(size_t a)
 }
 
 template<typename T>
-typename List<T>::Iterator List<T>::Iterator::operator++(int)
+typename DLList<T>::Iterator DLList<T>::Iterator::operator++(int)
 {
-
 	Iterator current;
 	assert(m_cur != nullptr);
 	current.m_cur = m_cur;
 	assert(current.m_cur->next != nullptr);
 	current.m_cur = current.m_cur->next;
 	return current;
-
 }
 
 template<typename T>
-typename List<T>::Iterator List<T>::Iterator::operator++()
+typename DLList<T>::Iterator DLList<T>::Iterator::operator++()
 {
 	assert(m_cur != nullptr);
 	assert(m_cur->next != nullptr);
@@ -292,7 +292,7 @@ typename List<T>::Iterator List<T>::Iterator::operator++()
 }
 
 template<typename T>
-typename List<T>::Iterator List<T>::Iterator::operator--()
+typename DLList<T>::Iterator DLList<T>::Iterator::operator--()
 {
 	assert(m_cur != nullptr);
 	assert(m_cur->prev != nullptr);
@@ -301,7 +301,7 @@ typename List<T>::Iterator List<T>::Iterator::operator--()
 }
 
 template<typename T>
-typename List<T>::Iterator List<T>::Iterator::operator--(int)
+typename DLList<T>::Iterator DLList<T>::Iterator::operator--(int)
 {
 	Iterator current;
 	assert(m_cur != nullptr);
@@ -313,13 +313,7 @@ typename List<T>::Iterator List<T>::Iterator::operator--(int)
 }
 
 template<typename T>
-inline void List<T>::Iterator::operator=(Iterator a)
-{
-	m_cur = a.m_cur;
-}
-
-template<typename T>
-inline T List<T>::Iterator::operator*()
+inline T DLList<T>::Iterator::operator*()
 {
 	return m_cur->Data;
 }

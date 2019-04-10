@@ -1,9 +1,11 @@
 #pragma once
 
 template<typename T>
-class Interface
+class List
 {
 public:
+	virtual ~List() {}
+
 	virtual bool empty() = 0;
 	virtual size_t size() = 0;
 	virtual void insert(const T& data,size_t pos) = 0;
