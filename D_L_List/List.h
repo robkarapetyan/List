@@ -42,7 +42,7 @@ public:
 	void clear() override;
 	bool empty() override;
 	size_t size() override;
-	void insert(const T& data, int pos) override;
+	void insert(const T& data, size_t pos) override;
 	void erase(size_t index) override;
 	void print();
 	void push_back(const T& data) override;
@@ -90,7 +90,7 @@ inline size_t List<T>::size()
 }
 
 template<typename T>
-inline void List<T>::insert(const T& data, int pos)
+inline void List<T>::insert(const T& data, size_t pos)
 {
 	assert(pos > 0);
 	if (pos > m_size + 1) {
