@@ -8,7 +8,7 @@ class DLList : public List<T>
 {
 public:
 	DLList();
-	~DLList() {} override;
+	~DLList() override {};
 
 private:
 	struct Node {
