@@ -26,17 +26,16 @@ public:
 	public:
 		Iterator() = default;
 		
-		Iterator operator + (size_t a);			// moves iterator forward  a times
-		Iterator operator - (size_t a);			//				  backward
+		Iterator operator + (size_t a);	// moves iterator forward  a times
+		Iterator operator - (size_t a);	// moves iterator backward a times
 		Iterator operator ++();
 		Iterator operator ++ (int);
 		Iterator operator --();
 		Iterator operator -- (int);
 		void operator = (Iterator a);
 		T operator *();
-
 	private:
-		Node* cur;
+		Node* m_cur;
 	};
 
 	void clear() override;
@@ -53,14 +52,14 @@ public:
 	Iterator end();
 private:
 
-	Node* head;
+	Node* m_head;
 	size_t m_size;
 };
-//----------------------------------------------- List's functions -------------------------------------------------------------------------------------------------------
+//----------------------------------------------- List's functions --------------------------
 
 template <typename T>
 List<T>::List()
-	: head(nullptr)
+	: m_head(nullptr)
 	, m_size(0)
 {
 }
@@ -68,10 +67,10 @@ List<T>::List()
 template<typename T>
 inline void List<T>::clear()
 {
-	while (head != nullptr) {
+	while (m_head != nullptr) {
 		Node* a;
-		a = head;
-		head = head->next;
+		a = m_head;
+		m_head = m_head->next;
 		delete a;
 		--m_size;
 	}
@@ -80,7 +79,7 @@ inline void List<T>::clear()
 template<typename T>
 inline bool List<T>::empty()
 {
-	return head == nullptr;
+	return m_head == nullptr;
 }
 
 template<typename T>
@@ -97,19 +96,17 @@ inline void List<T>::insert(const T& data, size_t pos)
 		throw std::out_of_range("Invalid size");
 	}
 	if (pos == 1) {
-		if(head == nullptr){
-			head = new Node(data, nullptr, nullptr);
+		if(m_head == nullptr){
+			m_head = new Node(data, nullptr, nullptr);
 			return;
 		}
-		else {
-			head->prev = new Node(data, nullptr, head);
-			head = head->prev;
-			++m_size;
-			return;
-		}
+		m_head->prev = new Node(data, nullptr, m_head);
+		m_head = m_head->prev;
+		++m_size;
+		return;
 	}
 	Node* tempdecr = nullptr;
-	Node* temp = head;
+	Node* temp = m_head;
 	for (size_t i = 1; i < pos; ++i) {
 		tempdecr = temp;
 		if (temp->next != nullptr)
@@ -137,14 +134,14 @@ inline void List<T>::erase(size_t index)
 	}
 
 	if (index == 1) {
-		Node* a = head;
-		head = head->next;
+		Node* a = m_head;
+		m_head = m_head->next;
 		delete a;
 		--m_size;
 		return;
 	}
 	Node* tempdecr = nullptr;
-	Node* temp = head;
+	Node* temp = m_head;
 	for (size_t i = 1; i < index; ++i) {
 		tempdecr = temp;
 		if (temp->next != nullptr)
@@ -162,7 +159,7 @@ inline void List<T>::erase(size_t index)
 template<typename T>
 inline void List<T>::print()
 {
-	Node* a = head;
+	Node* a = m_head;
 	while (a != nullptr) {
 		std::cout << a->Data << std::endl;
 		a = a->next;
@@ -170,11 +167,11 @@ inline void List<T>::print()
 	std::cout << "-------------------------------------------" << std::endl;
 
 }
-//----------------------------------------------- List's  Push,   Pop ---------------------------------------------------------------------------------------------------
+//----------------------------------------------- List's  Push,   Pop ------------------------
 template<typename T>
 inline void List<T>::push_back(const T& data)
 {
-	Node* temp = head;
+	Node* temp = m_head;
 	for (size_t i = 0; i < m_size; ++i) {
 		if (temp->next != nullptr)
 		{
@@ -182,30 +179,30 @@ inline void List<T>::push_back(const T& data)
 		}
 	}
 	temp->next = new Node(data, temp, nullptr);
-
+	++m_size;
 }
 
 template<typename T>
 inline void List<T>::push_front(const T & data)
 {
-	if (head == nullptr) {
-		head = new Node(data, nullptr, nullptr);
-		return;
-	}
-	else {
-		head->prev = new Node(data, nullptr, head);
-		head = head->prev;
+	if (m_head == nullptr) {
+		m_head = new Node(data, nullptr, nullptr);
 		++m_size;
 		return;
 	}
-	++m_size;
+	else {
+		m_head->prev = new Node(data, nullptr, m_head);
+		m_head = m_head->prev;
+		++m_size;
+		return;
+	}
 }
 
 template<typename T>
 inline void List<T>::pop_back()
 {
 	Node* tempdecr = nullptr;
-	Node* temp = head;
+	Node* temp = m_head;
 	while (temp->next != nullptr) {
 		tempdecr = temp;
 		temp = temp->next;
@@ -218,17 +215,18 @@ inline void List<T>::pop_back()
 template<typename T>
 inline void List<T>::pop_front()
 {
-	Node* temp = head;
-	head = head->next;
+	Node* temp = m_head;
+	m_head = m_head->next;
 	delete temp;
+	--m_size;
 }
 
-//-----------------------------------------------List's	Begin,	End---------------------------------------------------------------------------------------------------------
+//-----------------------------------------------List's	Begin,	End---------------------------
 template<typename T>
 typename List<T>::Iterator List<T>::begin()
 {
 	Iterator it;
-	it.cur = List::head;
+	it.cur = List::m_head;
 	return it;
 }
 
@@ -236,24 +234,24 @@ template<typename T>
 typename List<T>::Iterator List<T>::end()
 {
 	Iterator it;
-	it.cur = List::head;
+	it.cur = List::m_head;
 	while (it.cur->next != nullptr) {
 		it.cur = it.cur->next;
 	}
 	return it;
 }
 
-//----------------------------------------------- Iterator's operators ---------------------------------------------------------------------------------------------------------
+//----------------------------------------------- Iterator's operators -----------------------
 
 template<typename T>
 typename List<T>::Iterator List<T>::Iterator::operator+(size_t a)
 {
 	Iterator current;
-	assert(cur != nullptr);
-	current.cur = cur;
+	assert(m_cur != nullptr);
+	current.m_cur = m_cur;
 	for (size_t i = 0; i < a; ++i) {
-		assert(current.cur->next != nullptr);
-		current.cur = current.cur->next;
+		assert(current.m_cur->next != nullptr);
+		current.m_cur = current.m_cur->next;
 	}
 	return current;
 }
@@ -262,11 +260,11 @@ template<typename T>
 typename List<T>::Iterator List<T>::Iterator::operator-(size_t a)
 {
 	Iterator current;
-	assert(cur != nullptr);
-	current.cur = cur;
+	assert(m_cur != nullptr);
+	current.m_cur = m_cur;
 	for (size_t i = 0; i < a; ++i) {
-		assert(current.cur->prev != nullptr);
-		current.cur = current.cur->prev;
+		assert(current.m_cur->prev != nullptr);
+		current.m_cur = current.m_cur->prev;
 	}
 	return current;
 }
@@ -276,10 +274,10 @@ typename List<T>::Iterator List<T>::Iterator::operator++(int)
 {
 
 	Iterator current;
-	assert(cur != nullptr);
-	current.cur = cur;
-	assert(current.cur->next != nullptr);
-	current.cur = current.cur->next;
+	assert(m_cur != nullptr);
+	current.m_cur = m_cur;
+	assert(current.m_cur->next != nullptr);
+	current.m_cur = current.m_cur->next;
 	return current;
 
 }
@@ -287,18 +285,18 @@ typename List<T>::Iterator List<T>::Iterator::operator++(int)
 template<typename T>
 typename List<T>::Iterator List<T>::Iterator::operator++()
 {
-	assert(cur != nullptr);
-	assert(cur->next != nullptr);
-	cur = cur->next;
+	assert(m_cur != nullptr);
+	assert(m_cur->next != nullptr);
+	m_cur = m_cur->next;
 	return *this;
 }
 
 template<typename T>
 typename List<T>::Iterator List<T>::Iterator::operator--()
 {
-	assert(cur != nullptr);
-	assert(cur->prev != nullptr);
-	cur = cur->prev;
+	assert(m_cur != nullptr);
+	assert(m_cur->prev != nullptr);
+	m_cur = m_cur->prev;
 	return *this;
 }
 
@@ -306,10 +304,10 @@ template<typename T>
 typename List<T>::Iterator List<T>::Iterator::operator--(int)
 {
 	Iterator current;
-	assert(cur != nullptr);
-	current.cur = cur;
-	assert(current.cur->prev != nullptr);
-	current.cur = current.cur->prev;
+	assert(m_cur != nullptr);
+	current.m_cur = m_cur;
+	assert(current.m_cur->prev != nullptr);
+	current.m_cur = current.m_cur->prev;
 	return current;
 
 }
@@ -317,13 +315,11 @@ typename List<T>::Iterator List<T>::Iterator::operator--(int)
 template<typename T>
 inline void List<T>::Iterator::operator=(Iterator a)
 {
-	cur = a.cur;
+	m_cur = a.m_cur;
 }
 
 template<typename T>
 inline T List<T>::Iterator::operator*()
 {
-	return cur->Data;
+	return m_cur->Data;
 }
-
-//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
