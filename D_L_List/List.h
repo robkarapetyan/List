@@ -8,6 +8,7 @@ class DLList : public List<T>
 {
 public:
 	DLList();
+	DLList<T>& operator=(const DLList<T>&a);
 	~DLList() override {};
 
 private:
@@ -26,7 +27,7 @@ public:
 		friend class DLList;
 	public:
 		Iterator() = default;
-		Iterator& operator=(const Iterator&) = default;
+		Iterator& operator=(const Iterator& a);
 
 		Iterator operator + (size_t a);	// moves iterator forward  a times
 		Iterator operator - (size_t a);	// moves iterator backward a times
@@ -64,6 +65,29 @@ DLList<T>::DLList()
 	: m_head(nullptr)
 	, m_size(0)
 {
+}
+
+template<typename T>
+inline DLList<T>& DLList<T>::operator=(const DLList<T>&a)
+{
+	if (this == &a)
+	{
+		return *this;
+	}
+	assert(a.m_head->next != nullptr);
+	m_head = new Node(a.m_head->Data, nullptr, nullptr);
+	Node* tmp = a.m_head;
+	
+	Node* tmp_this = m_head;
+	while (tmp->next != nullptr) {
+		tmp_this->next = new Node(tmp->next->Data, tmp_this, nullptr);
+		tmp_this = tmp_this->next;
+		//assert(aa->next != nullptr);
+		tmp = tmp->next;
+	}
+	
+
+	return *this;
 }
 
 
@@ -260,6 +284,17 @@ typename DLList<T>::Iterator DLList<T>::end()
 }
 
 //----------------------------------------------- Iterator's operators --------------
+
+template<typename T>
+typename DLList<T>::Iterator& DLList<T>::Iterator::operator=(const DLList<T>::Iterator &a)
+{
+	if (this == &a)
+	{
+		return *this;
+	}
+	m_cur = a.m_cur;
+	return *this;
+}
 
 template<typename T>
 typename DLList<T>::Iterator DLList<T>::Iterator::operator+(size_t a)

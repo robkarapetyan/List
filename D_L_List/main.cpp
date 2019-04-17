@@ -12,13 +12,24 @@ int main() {
 		ctc.insert(8, 3);
 
 		ctc.print();
-		DLList<int>::Iterator it = ctc.end();
+		DLList<int> copy;
+
+		copy = ctc;
+
+		ctc.clear();
+
+		std::cout << "Ctc is" << std::endl;
+		ctc.print();
+
+		std::cout << "Copy is" << std::endl;
+		copy.print();
+		/*DLList<int>::Iterator it = ctc.end();
 		--it;	
 		std::cout << *it << std::endl << "-------" << std::endl;
 		it = it + 1;           
 		std::cout << *it << std::endl << "-------" << std::endl;
 		
-		std::cout << ctc.getValue(1);
+		std::cout << ctc.getValue(1);*/
 
 		/*
 		ctc.push_back(6);
