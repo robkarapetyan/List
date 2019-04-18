@@ -74,19 +74,14 @@ inline DLList<T>& DLList<T>::operator=(const DLList<T>&a)
 	{
 		return *this;
 	}
-	assert(a.m_head->next != nullptr);
 	m_head = new Node(a.m_head->Data, nullptr, nullptr);
 	Node* tmp = a.m_head;
-	
 	Node* tmp_this = m_head;
 	while (tmp->next != nullptr) {
 		tmp_this->next = new Node(tmp->next->Data, tmp_this, nullptr);
 		tmp_this = tmp_this->next;
-		//assert(aa->next != nullptr);
 		tmp = tmp->next;
 	}
-	
-
 	return *this;
 }
 
